@@ -1,0 +1,63 @@
+<!-- templates/result.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-3 p-3">
+      <h4>Summary</h4>
+      <p><strong>Ticker:</strong> {{ ticker }}</p>
+      <p><strong>Selected Best Model:</strong> {{ summary.best_model }}</p>
+      <p><strong>Model Confidence:</strong> {{ summary.best_confidence }}%</p>
+      <div class="row">
+        <div class="col"><strong>LSTM MAE:</strong> {{ summary.lstm_mae | round(4) }}</div>
+        <div class="col"><strong>GRU MAE:</strong> {{ summary.gru_mae | round(4) }}</div>
+        <div class="col"><strong>Baseline MAE:</strong> {{ summary.baseline_mae | round(4) }}</div>
+      </div>
+    </div>
+
+    <div class="card mb-3 p-2">
+      <h5 class="mb-2">Historical</h5>
+      <div>{{ hist_plot | safe }}</div>
+    </div>
+
+    <div class="card mb-3 p-2">
+      <h5 class="mb-2">Original vs Predicted (Test)</h5>
+      <div>{{ test_plot | safe }}</div>
+    </div>
+
+    <div class="card mb-3 p-2">
+      <h5 class="mb-2">Future Predictions</h5>
+      <div>{{ future_plot | safe }}</div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card p-3 mb-3">
+      <h5>Predicted Prices</h5>
+      <table class="table table-sm">
+        <thead><tr><th>Date</th><th>Price</th></tr></thead>
+        <tbody>
+        {% for d,p in future_data %}
+          <tr><td>{{ d }}</td><td>{{ p | round(2) }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div class="d-grid gap-2">
+        <a id="downloadBtn" class="btn btn-outline-primary" href="#" role="button">Download CSV</a>
+        <a class="btn btn-secondary" href="{{ url_for('index') }}">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const futureData = {{ future_data | tojson }};
+const downloadBtn = document.getElementById('downloadBtn');
+function buildDownloadUrl() {
+  const params = new URLSearchParams();
+  for (const [d,p] of futureData) { params.append('date', d); params.append('price', p); }
+  return '/download?' + params.toString();
+}
+downloadBtn.href = buildDownloadUrl();
+</script>
+{% endblock %}

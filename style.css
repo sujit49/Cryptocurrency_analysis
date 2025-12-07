@@ -1,0 +1,47 @@
+/* Default light theme */
+body[data-theme="light"] {
+  background: #f7f9fb;
+  color: #212529;
+}
+
+body[data-theme="light"] .card {
+  background: #fff;
+  color: #212529;
+}
+
+body[data-theme="light"] .table {
+  background: #fff;
+  color: #212529;
+}
+
+/* Dark theme */
+body[data-theme="dark"] {
+  background: #121212;
+  color: #f0f0f0;
+}
+
+body[data-theme="dark"] .card {
+  background: #1e1e1e;
+  color: #f0f0f0;
+}
+
+body[data-theme="dark"] .table {
+  background: #1e1e1e;
+  color: #f0f0f0;
+}
+
+body[data-theme="dark"] .btn-outline-light {
+  color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+body[data-theme="dark"] .btn-outline-light:hover {
+  background: #f0f0f0;
+  color: #121212;
+}
+
+/* Common styles */
+.card {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+  border-radius: 8px;
+}

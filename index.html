@@ -1,0 +1,63 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card p-4">
+      <h3 class="card-title text-center mb-3">Cryptocurrency / Stock Price Predictor</h3>
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" id="predictForm">
+        <div class="mb-3">
+          <label class="form-label">Ticker (Yahoo Finance)</label>
+          <input class="form-control" name="stock" placeholder="e.g., BTC-USD, ETH-USD, DOGE-USD or any token" required>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Days to predict</label>
+            <input type="number" name="no_of_days" class="form-control" value="10" min="1" max="100">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Scenario</label>
+            <select class="form-select" name="scenario">
+              <option value="neutral">Neutral</option>
+              <option value="bullish">Bullish (+2%)</option>
+              <option value="bearish">Bearish (-3%)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Model choice</label>
+          <select class="form-select" name="model_choice">
+            <option value="best">Auto (choose best)</option>
+            <option value="lstm">LSTM</option>
+            <option value="gru">GRU</option>
+            <option value="baseline">Baseline (last close)</option>
+          </select>
+        </div>
+
+        <div class="d-grid">
+          <button id="predictBtn" class="btn btn-primary">Predict</button>
+        </div>
+      </form>
+
+      <div id="loader" class="text-center mt-3 d-none">
+        <div class="spinner-border" role="status"></div>
+        <p class="mt-2">Predicting — please wait...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('predictForm');
+const loader = document.getElementById('loader');
+form.addEventListener('submit', () => {
+  loader.classList.remove('d-none');
+});
+</script>
+{% endblock %}
